@@ -1,0 +1,68 @@
+RPG v 0.01a
+
+APPLICATION NAME: TDB
+
+This is fluid. Change it as you come up with new ideas or as otherwise needed.
+
+
+USER INTERFACE
+==============    
+
+Map will be a matrix/multidimensional array (an int **) holding an int value for the status of that particular X and Y on the map, for example:
+
+[ 0 0 0 0 1 1 1 1 1 0 0 0 0 0 0 0 1 ]
+[ 0 0 0 0 0 1 1 1 1 0 0 0 0 0 0 0 1 ]
+[ 0 0 0 0 0 1 1 1 1 0 0 0 1 0 0 0 1 ]
+[ 0 0 2 0 0 0 0 1 1 0 0 1 1 1 0 0 1 ]
+[ 0 0 0 0 0 0 0 1 1 0 0 0 1 0 0 0 1 ]
+[ 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 1 ]
+[ 0 1 1 0 0 0 0 1 1 0 0 0 0 0 0 0 1 ]
+[ 0 1 1 0 2 0 0 0 1 0 0 0 0 0 0 1 1 ]
+[ 0 1 1 1 0 0 0 0 0 0 0 0 0 0 0 1 1 ]
+[ 0 1 1 1 0 0 0 0 0 0 0 1 0 0 1 1 1 ]
+[ 0 1 1 1 0 0 0 0 0 0 0 0 0 1 1 1 1 ]
+
+the 0 represents a spot that can be moved into
+the 1 represents a spot that can't be moved into
+and the 2 represents either an item, or enemy or something like that
+
+Another idea is a 0 represents a blocked area, and > 0 is an open block available for a move, but the int value
+increase in probability that an enemy fight will occur.. so for example:
+
+[ 1 2 3 0 0 3 2 1 1 1 1 1 0 0 ]
+[ 1 1 2 0 0 2 2 2 2 2 1 1 0 0 ]
+[ 1 1 1 0 0 1 1 2 3 2 1 1 0 0 ]
+[ 1 1 1 0 0 1 1 2 2 2 1 1 0 0 ]
+[ 1 1 1 0 1 1 1 1 1 1 1 1 1 1 ]
+[ 1 1 1 1 1 1 1 1 1 1 1 1 1 1 ]
+
+if they walk over a 1, it's a 25% chance they fight an enemy,
+if they walk over a 2 it goes up to say, 50%
+a 3 is 75%
+and so on... (also taking into account fight possibilities below)
+
+A heads up display, or side status area will be visible to let user know of their stats, and items they hold
+
+
+Fight possibilities
+===================
+During each move, a method on the map is run that will calculate a probability based on factors, ie:
+
+   for each time a move is made that doesn't result in an enemy fight, we increment a variable that will increase probability
+
+
+CLASSES
+=======
+
+MAP
+
+CHARACTER
+  |
+   -- ENEMY
+  |
+   -- USER
+
+ITEM
+  |
+   - TBD
+
