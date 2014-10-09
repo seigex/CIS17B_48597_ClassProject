@@ -1,0 +1,20 @@
+#ifndef DECLARATIONS_H
+#define DECLARATIONS_H
+
+#define MOVE_LEFT 0
+#define MOVE_RIGHT 1
+#define MOVE_UP 2
+#define MOVE_DOWN 3
+
+#define BOARD_CANT_MOVE 4
+#define BOARD_CAN_MOVE 5
+
+#define CHAR_ISENEMY 6
+#define CHAR_ISFRIENDLY 7
+
+#define MOVE_AUTHORIZED 8
+#define MOVE_ERROR_OUTOFBOUNDS 9
+#define MOVE_ERROR_BLOCKED 10
+#define MOVE_ERROR_UNKNOWN 11
+
+#endif // DECLARATIONS_H
