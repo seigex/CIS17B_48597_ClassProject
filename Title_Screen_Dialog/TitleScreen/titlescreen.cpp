@@ -8,8 +8,6 @@ TitleScreen::TitleScreen(QWidget *parent) :
 
     ui->setupUi(this);
 
-    QPixmap titlePic("C:/Users/agros_000/Pictures/GameTitle.jpg");
-    ui->label->setPixmap(titlePic);
 }
 
 TitleScreen::~TitleScreen()
@@ -31,6 +29,12 @@ void TitleScreen::on_pushButton_2_clicked()
 
 //Push button to open the options dialog
 void TitleScreen::on_pushButton_3_clicked()
+{
+//pending
+}
+
+//Push Button to open the Help dialog
+void TitleScreen::on_pushButton_4_clicked()
 {
 //pending
 }

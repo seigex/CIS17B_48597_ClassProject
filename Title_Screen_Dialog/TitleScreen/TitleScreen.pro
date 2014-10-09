@@ -18,3 +18,6 @@ SOURCES += main.cpp\
 HEADERS  += titlescreen.h
 
 FORMS    += titlescreen.ui
+
+RESOURCES += \
+    Title.qrc
