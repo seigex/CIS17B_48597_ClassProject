@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Path.png</file>
+        <file>Wall.png</file>
+        <file>Character.png</file>
+    </qresource>
+</RCC>
