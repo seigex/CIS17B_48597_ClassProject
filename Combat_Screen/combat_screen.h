@@ -2,6 +2,7 @@
 #define COMBAT_SCREEN_H
 
 #include <QDialog>
+#include <QLabel>
 
 namespace Ui {
 class Combat_Screen;
@@ -19,12 +20,12 @@ public:
         enemy_health=20;};
     void set_attack(){attack=5;};
     int get_enemy_health(){return enemy_health;};
-    int enemy_kill();
 
 private:
     Ui::Combat_Screen *ui;
     QPushButton *attack_button;
     QPushButton *defend_button;
+    QLabel *enemy_health_display;
     int attack;
     int hero_health;
     int enemy_health;
