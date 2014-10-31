@@ -1,7 +1,9 @@
 #include <QPushButton>
+#include <iostream>
 #include <QLabel>
 #include <QLayout>
 #include "combat_screen.h"
+#include "win_screen.h"
 #include "ui_combat_screen.h"
 
 Combat_Screen::Combat_Screen(QWidget *parent) :
@@ -32,14 +34,14 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
 
     setLayout(main_layout);
 
+    set_health();
+    set_attack();
+
     QObject::connect(attack_button,SIGNAL(clicked()),
                      this,SLOT(calculate_attack()));
+    QObject::connect(attack_button,SIGNAL(clicked()),
+                     this,SLOT(show_output()));
 
-    set_health();
-
-    if(enemy_health<=0){
-        close();
-    }
 }
 
 Combat_Screen::~Combat_Screen()
@@ -49,6 +51,18 @@ Combat_Screen::~Combat_Screen()
 
 void Combat_Screen::calculate_attack(){
     enemy_health=enemy_health-attack;
+    if(enemy_health<=0){
+        std::cout<<"YOU WIN!"<<std::endl;
+        Win_Screen *dialog2 = new Win_Screen;
+        dialog2->show();
+
+        QObject::connect(dialog2,SIGNAL(finished(int)),
+                         this,SLOT(close()));
+    }
+}
+
+void Combat_Screen::show_output(){
+    std::cout<<enemy_health<<" "<<attack<<std::endl;
 }
 
 

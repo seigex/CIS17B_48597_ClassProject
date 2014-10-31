@@ -18,6 +18,8 @@ public:
         hero_health=100;
         enemy_health=20;};
     void set_attack(){attack=5;};
+    int get_enemy_health(){return enemy_health;};
+    int enemy_kill();
 
 private:
     Ui::Combat_Screen *ui;
@@ -29,6 +31,7 @@ private:
 
 private slots:
     void calculate_attack();
+    void show_output();
 };
 
 #endif // COMBAT_SCREEN_H
