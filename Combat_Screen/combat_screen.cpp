@@ -52,17 +52,16 @@ Combat_Screen::~Combat_Screen()
 void Combat_Screen::calculate_attack(){
     enemy_health=enemy_health-attack;
     if(enemy_health<=0){
-        std::cout<<"YOU WIN!"<<std::endl;
-        Win_Screen *dialog2 = new Win_Screen;
-        dialog2->show();
+        Win_Screen *dialog = new Win_Screen;
+        dialog->show();
 
-        QObject::connect(dialog2,SIGNAL(finished(int)),
+        QObject::connect(dialog,SIGNAL(finished(int)),
                          this,SLOT(close()));
     }
 }
 
 void Combat_Screen::show_output(){
-    std::cout<<enemy_health<<" "<<attack<<std::endl;
+    std::cout<<enemy_health<<std::endl;
 }
 
 
