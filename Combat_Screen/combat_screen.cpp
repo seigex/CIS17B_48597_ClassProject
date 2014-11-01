@@ -99,9 +99,6 @@ void Combat_Screen::calculate_attack(){
 
     enemy_health=enemy_health-attack;
 
-    hero_action_label->show();
-
-
     if(enemy_health<=0){
         hero_action_label->hide();
         enemy_action_label->hide();
@@ -115,19 +112,21 @@ void Combat_Screen::calculate_attack(){
 
     attack_button->setEnabled(false);
 
-    attack_timer->start(6000);
-
-    QObject::connect(attack_timer,SIGNAL(timeout()),
-                     this,SLOT(enable_attack()));
-
     hero_action_label->setText("You used ATTACK!");
 
     QTimer *hero_action_timer = new QTimer;
 
-    hero_action_timer->start(5000);
-
     QObject::connect(hero_action_timer,SIGNAL(timeout()),
                      this,SLOT(set_hero_action_display()));
+
+    QObject::connect(attack_timer,SIGNAL(timeout()),
+                     this,SLOT(enable_attack()));
+
+    hero_action_label->show();
+
+    attack_timer->start(6000);
+
+    hero_action_timer->start(5000);
 }
 
 
