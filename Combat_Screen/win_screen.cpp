@@ -8,6 +8,7 @@ Win_Screen::Win_Screen(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    close_button = new QPushButton;
     close_button->setText("CLOSE");
     close_button->setDefault(true);
 

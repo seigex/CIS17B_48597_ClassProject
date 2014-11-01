@@ -19,7 +19,7 @@ public:
 
 private:
     Ui::Win_Screen *ui;
-    QPushButton *close_button = new QPushButton;
+    QPushButton *close_button;
 
 };
 

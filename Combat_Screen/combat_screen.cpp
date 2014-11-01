@@ -1,5 +1,6 @@
 #include <QPushButton>
 #include <QTimer>
+#include <QLCDNumber>
 #include <iostream>
 #include <QLabel>
 #include <QLayout>
@@ -18,7 +19,11 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
 
     set_attack();
 
-    timer = new QTimer;
+    attack_timer = new QTimer;
+    enemy_timer = new QTimer;
+
+    hero_action_label = new QLabel;
+    enemy_action_label = new QLabel;
 
     enemy_health_display = new QLabel;
     enemy_health_display->setNum(enemy_health);
@@ -30,7 +35,7 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
     defend_button = new QPushButton;
     defend_button->setText("DEFEND");
 
-    QProgressBar *hero_health_bar = new QProgressBar;
+    hero_health_bar = new QProgressBar;
     hero_health_bar->setValue(hero_health);
 
     QVBoxLayout *left_layout = new QVBoxLayout;
@@ -40,28 +45,48 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
     left_layout->addWidget(defend_button);
 
     QLabel *enemy_title = new QLabel;
+    QLabel *hp_label = new QLabel;
     enemy_title->setText(enemy_name);
+    hp_label->setText(" HP");
 
     QHBoxLayout *top_right_layout = new QHBoxLayout;
     top_right_layout->addWidget(enemy_title);
+    top_right_layout->addWidget(hp_label);
     top_right_layout->addWidget(enemy_health_display);
 
     QVBoxLayout *right_layout = new QVBoxLayout;
     right_layout->addLayout(top_right_layout);
     right_layout->addStretch();
 
-    QHBoxLayout *main_layout = new QHBoxLayout;
-    main_layout->addLayout(left_layout);
-    main_layout->addSpacing(100);
-    main_layout->addLayout(right_layout);
+    QHBoxLayout *top_layout = new QHBoxLayout;
+    top_layout->addLayout(left_layout);
+    top_layout->addSpacing(100);
+    top_layout->addLayout(right_layout);
+
+    QVBoxLayout *bottom_layout = new QVBoxLayout;
+    bottom_layout->addWidget(hero_action_label);
+    bottom_layout->addWidget(enemy_action_label);
+
+    QVBoxLayout *main_layout = new QVBoxLayout;
+    main_layout->addLayout(top_layout);
+    main_layout->addLayout(bottom_layout);
 
     setLayout(main_layout);
+
+    enemy_timer->start(6000);
 
     QObject::connect(attack_button,SIGNAL(clicked()),
                      this,SLOT(calculate_attack()));
 
     QObject::connect(attack_button,SIGNAL(clicked()),
                      this,SLOT(change_value()));
+
+    QObject::connect(enemy_timer,SIGNAL(timeout()),
+                     this,SLOT(calculate_enemy_attack()));
+
+    QObject::connect(attack_timer,SIGNAL(timeout()),
+                     this,SLOT(connect_attack_timer()));
+
 
 }
 
@@ -71,10 +96,16 @@ Combat_Screen::~Combat_Screen()
 }
 
 void Combat_Screen::calculate_attack(){
+
     enemy_health=enemy_health-attack;
+
+    hero_action_label->show();
 
 
     if(enemy_health<=0){
+        hero_action_label->hide();
+        enemy_action_label->hide();
+        enemy_timer->stop();
         Win_Screen *dialog = new Win_Screen;
         dialog->show();
 
@@ -84,11 +115,19 @@ void Combat_Screen::calculate_attack(){
 
     attack_button->setEnabled(false);
 
-    timer->start(10000);
+    attack_timer->start(6000);
 
-    QObject::connect(timer,SIGNAL(timeout()),
+    QObject::connect(attack_timer,SIGNAL(timeout()),
                      this,SLOT(enable_attack()));
 
+    hero_action_label->setText("You used ATTACK!");
+
+    QTimer *hero_action_timer = new QTimer;
+
+    hero_action_timer->start(5000);
+
+    QObject::connect(hero_action_timer,SIGNAL(timeout()),
+                     this,SLOT(set_hero_action_display()));
 }
 
 
@@ -104,3 +143,28 @@ void Combat_Screen::enable_attack(){
 
 }
 
+void Combat_Screen::calculate_enemy_attack(){
+
+    hero_health=hero_health-5;
+    hero_health_bar->setValue(hero_health);
+
+    enemy_action_label->setText("SPIDER used BITE!");
+
+    enemy_action_label->show();
+
+    QTimer *enemy_action_timer = new QTimer;
+    enemy_action_timer->start(5000);
+
+    QObject::connect(enemy_action_timer,SIGNAL(timeout()),
+                     this,SLOT(set_enemy_action_display()));
+
+
+}
+
+void Combat_Screen::set_enemy_action_display(){
+    enemy_action_label->hide();
+}
+
+void Combat_Screen::set_hero_action_display(){
+    hero_action_label->hide();
+}
