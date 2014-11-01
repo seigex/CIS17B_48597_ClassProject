@@ -4,6 +4,7 @@
 
 #include <QDialog>
 #include <QLabel>
+#include <QTimer>
 
 namespace Ui {
 class Combat_Screen;
@@ -27,14 +28,16 @@ private:
     QPushButton *attack_button;
     QPushButton *defend_button;
     QLabel *enemy_health_display;
+    QTimer *timer;
     int attack;
     int hero_health;
     int enemy_health;
+    const QString enemy_name = "SPIDER   HP";
 
 private slots:
     void calculate_attack();
-    void show_output();
     void change_value();
+    void enable_attack();
 };
 
 #endif // COMBAT_SCREEN_H

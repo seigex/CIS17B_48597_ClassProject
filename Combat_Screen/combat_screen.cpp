@@ -1,4 +1,5 @@
 #include <QPushButton>
+#include <QTimer>
 #include <iostream>
 #include <QLabel>
 #include <QLayout>
@@ -16,6 +17,8 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
     set_health();
 
     set_attack();
+
+    timer = new QTimer;
 
     enemy_health_display = new QLabel;
     enemy_health_display->setNum(enemy_health);
@@ -36,8 +39,15 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
     left_layout->addWidget(attack_button);
     left_layout->addWidget(defend_button);
 
+    QLabel *enemy_title = new QLabel;
+    enemy_title->setText(enemy_name);
+
+    QHBoxLayout *top_right_layout = new QHBoxLayout;
+    top_right_layout->addWidget(enemy_title);
+    top_right_layout->addWidget(enemy_health_display);
+
     QVBoxLayout *right_layout = new QVBoxLayout;
-    right_layout->addWidget(enemy_health_display);
+    right_layout->addLayout(top_right_layout);
     right_layout->addStretch();
 
     QHBoxLayout *main_layout = new QHBoxLayout;
@@ -49,9 +59,6 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
 
     QObject::connect(attack_button,SIGNAL(clicked()),
                      this,SLOT(calculate_attack()));
-
-    QObject::connect(attack_button,SIGNAL(clicked()),
-                     this,SLOT(show_output()));
 
     QObject::connect(attack_button,SIGNAL(clicked()),
                      this,SLOT(change_value()));
@@ -74,13 +81,26 @@ void Combat_Screen::calculate_attack(){
         QObject::connect(dialog,SIGNAL(finished(int)),
                          this,SLOT(close()));
     }
+
+    attack_button->setEnabled(false);
+
+    timer->start(10000);
+
+    QObject::connect(timer,SIGNAL(timeout()),
+                     this,SLOT(enable_attack()));
+
 }
 
-void Combat_Screen::show_output(){
-    std::cout<<enemy_health<<std::endl;
-}
 
 void Combat_Screen::change_value(){
+
     enemy_health_display->setNum(enemy_health);
+
+}
+
+void Combat_Screen::enable_attack(){
+
+    attack_button->setEnabled(true);
+
 }
 
