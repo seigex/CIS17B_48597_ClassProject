@@ -29,21 +29,21 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
 
     QProgressBar *hero_health_bar = new QProgressBar;
     hero_health_bar->setValue(hero_health);
-    hero_health_bar->geometry();
 
-    QVBoxLayout *bottom_left_layout = new QVBoxLayout;
-    bottom_left_layout->addWidget(hero_health_bar);
-    bottom_left_layout->addSpacing(200);
-    bottom_left_layout->addWidget(attack_button);
-    bottom_left_layout->addWidget(defend_button);
+    QVBoxLayout *left_layout = new QVBoxLayout;
+    left_layout->addWidget(hero_health_bar);
+    left_layout->addSpacing(100);
+    left_layout->addWidget(attack_button);
+    left_layout->addWidget(defend_button);
 
-    QHBoxLayout *left_layout = new QHBoxLayout;
-    left_layout->addLayout(bottom_left_layout);
-    left_layout->addSpacing(200);
-    left_layout->addWidget(enemy_health_display);
+    QVBoxLayout *right_layout = new QVBoxLayout;
+    right_layout->addWidget(enemy_health_display);
+    right_layout->addStretch();
 
-    QVBoxLayout *main_layout = new QVBoxLayout;
+    QHBoxLayout *main_layout = new QHBoxLayout;
     main_layout->addLayout(left_layout);
+    main_layout->addSpacing(100);
+    main_layout->addLayout(right_layout);
 
     setLayout(main_layout);
 

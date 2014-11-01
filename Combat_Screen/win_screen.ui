@@ -2,13 +2,11 @@
 <ui version="4.0">
  <class>Win_Screen</class>
  <widget class="QDialog" name="Win_Screen">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>400</width>
-    <height>185</height>
-   </rect>
+  <property name="minimumSize">
+   <size>
+    <width>390</width>
+    <height>137</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
@@ -16,8 +14,8 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>30</y>
+     <x>40</x>
+     <y>10</y>
      <width>331</width>
      <height>111</height>
     </rect>
