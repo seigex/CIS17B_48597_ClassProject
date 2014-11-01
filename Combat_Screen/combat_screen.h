@@ -1,3 +1,4 @@
+
 #ifndef COMBAT_SCREEN_H
 #define COMBAT_SCREEN_H
 
@@ -33,6 +34,7 @@ private:
 private slots:
     void calculate_attack();
     void show_output();
+    void change_value();
 };
 
 #endif // COMBAT_SCREEN_H

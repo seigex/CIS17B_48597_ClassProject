@@ -17,6 +17,9 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
 
     set_attack();
 
+    enemy_health_display = new QLabel;
+    enemy_health_display->setNum(enemy_health);
+
     attack_button = new QPushButton;
     attack_button->setText("ATTACK");
     attack_button->setDefault(true);
@@ -26,6 +29,7 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
 
     QProgressBar *hero_health_bar = new QProgressBar;
     hero_health_bar->setValue(hero_health);
+    hero_health_bar->geometry();
 
     QVBoxLayout *bottom_left_layout = new QVBoxLayout;
     bottom_left_layout->addWidget(hero_health_bar);
@@ -36,6 +40,7 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
     QHBoxLayout *left_layout = new QHBoxLayout;
     left_layout->addLayout(bottom_left_layout);
     left_layout->addSpacing(200);
+    left_layout->addWidget(enemy_health_display);
 
     QVBoxLayout *main_layout = new QVBoxLayout;
     main_layout->addLayout(left_layout);
@@ -47,6 +52,9 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
 
     QObject::connect(attack_button,SIGNAL(clicked()),
                      this,SLOT(show_output()));
+
+    QObject::connect(attack_button,SIGNAL(clicked()),
+                     this,SLOT(change_value()));
 
 }
 
@@ -72,4 +80,7 @@ void Combat_Screen::show_output(){
     std::cout<<enemy_health<<std::endl;
 }
 
+void Combat_Screen::change_value(){
+    enemy_health_display->setNum(enemy_health);
+}
 

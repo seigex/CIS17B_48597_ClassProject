@@ -61,6 +61,19 @@
     <pixmap resource="Hero.qrc">:/new/prefix1/spider.jpg</pixmap>
    </property>
   </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>160</y>
+     <width>46</width>
+     <height>13</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+  </widget>
  </widget>
  <resources>
   <include location="Hero.qrc"/>
