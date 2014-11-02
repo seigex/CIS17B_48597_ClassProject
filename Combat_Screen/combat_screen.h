@@ -33,10 +33,10 @@ private:
     QLabel *enemy_action_label;
     QProgressBar *hero_health_bar;
     QTimer *attack_timer;
-    QTimer *hero_defend_timer;
+    QTimer *defend_timer;
     QTimer *enemy_timer;
-    QTimer *enemy_action_timer;
-    QTimer *hero_action_timer;
+    QTimer *enemy_display_timer;
+    QTimer *hero_display_timer;
     int attack;
     bool defend;
     int hero_health;
