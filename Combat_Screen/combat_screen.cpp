@@ -16,9 +16,12 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
     ui->setupUi(this);
 
     set_health();
-
     set_attack();
 
+    enemy_action_timer = new QTimer;
+    hero_action_timer = new QTimer;
+    enemy_action_timer = new QTimer;
+    hero_defend_timer = new QTimer;
     attack_timer = new QTimer;
     enemy_timer = new QTimer;
 
@@ -84,8 +87,8 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
     QObject::connect(enemy_timer,SIGNAL(timeout()),
                      this,SLOT(calculate_enemy_attack()));
 
-    QObject::connect(attack_timer,SIGNAL(timeout()),
-                     this,SLOT(connect_attack_timer()));
+    QObject::connect(defend_button,SIGNAL(clicked()),
+                     this,SLOT(set_defend()));
 
 
 }
@@ -111,10 +114,10 @@ void Combat_Screen::calculate_attack(){
     }
 
     attack_button->setEnabled(false);
+    attack_timer->start(6000);
+    hero_action_timer->start(5000);
 
     hero_action_label->setText("You used ATTACK!");
-
-    QTimer *hero_action_timer = new QTimer;
 
     QObject::connect(hero_action_timer,SIGNAL(timeout()),
                      this,SLOT(set_hero_action_display()));
@@ -124,11 +127,18 @@ void Combat_Screen::calculate_attack(){
 
     hero_action_label->show();
 
-    attack_timer->start(6000);
-
-    hero_action_timer->start(5000);
 }
 
+void Combat_Screen::set_defend(){
+    hero_defend_timer->start(10000);
+    defend=true;
+    defend_button->setEnabled(false);
+
+    QObject::connect(hero_defend_timer,SIGNAL(timeout()),
+                     this,SLOT(enable_defend()));
+
+
+}
 
 void Combat_Screen::change_value(){
 
@@ -139,11 +149,32 @@ void Combat_Screen::change_value(){
 void Combat_Screen::enable_attack(){
 
     attack_button->setEnabled(true);
+    attack_timer->stop();
+
+}
+
+void Combat_Screen::enable_defend(){
+
+    defend_button->setEnabled(true);
+    hero_defend_timer->stop();
 
 }
 
 void Combat_Screen::calculate_enemy_attack(){
 
+    if(defend==true){
+        enemy_action_label->setText("SPIDER used BITE!");
+        enemy_action_label->show();
+
+        enemy_action_timer->start(5000);
+
+        hero_action_label->setText("YOU defended the attack!");
+        hero_action_label->show();
+
+        hero_action_timer->start(5000);
+
+        defend=false;
+    }else{
     hero_health=hero_health-5;
     hero_health_bar->setValue(hero_health);
 
@@ -151,11 +182,12 @@ void Combat_Screen::calculate_enemy_attack(){
 
     enemy_action_label->show();
 
-    QTimer *enemy_action_timer = new QTimer;
     enemy_action_timer->start(5000);
-
+}
     QObject::connect(enemy_action_timer,SIGNAL(timeout()),
                      this,SLOT(set_enemy_action_display()));
+    QObject::connect(hero_action_timer,SIGNAL(timeout()),
+                     this,SLOT(set_hero_action_display()));
 
 
 }
@@ -166,4 +198,5 @@ void Combat_Screen::set_enemy_action_display(){
 
 void Combat_Screen::set_hero_action_display(){
     hero_action_label->hide();
+    hero_action_timer->stop();
 }

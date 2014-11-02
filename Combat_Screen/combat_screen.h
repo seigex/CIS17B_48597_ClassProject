@@ -33,8 +33,12 @@ private:
     QLabel *enemy_action_label;
     QProgressBar *hero_health_bar;
     QTimer *attack_timer;
+    QTimer *hero_defend_timer;
     QTimer *enemy_timer;
+    QTimer *enemy_action_timer;
+    QTimer *hero_action_timer;
     int attack;
+    bool defend;
     int hero_health;
     int enemy_health;
     const QString enemy_name = "SPIDER ";
@@ -43,9 +47,11 @@ private slots:
     void calculate_attack();
     void change_value();
     void enable_attack();
+    void enable_defend();
     void calculate_enemy_attack();
     void set_enemy_action_display();
     void set_hero_action_display();
+    void set_defend();
 };
 
 #endif // COMBAT_SCREEN_H
