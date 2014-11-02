@@ -45,7 +45,6 @@ private:
 
 private slots:
     void calculate_attack();
-    void change_value();
     void enable_attack();
     void enable_defend();
     void calculate_enemy_attack();

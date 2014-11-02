@@ -80,9 +80,6 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
     QObject::connect(attack_button,SIGNAL(clicked()),
                      this,SLOT(calculate_attack()));
 
-    QObject::connect(attack_button,SIGNAL(clicked()),
-                     this,SLOT(change_value()));
-
     QObject::connect(enemy_timer,SIGNAL(timeout()),
                      this,SLOT(calculate_enemy_attack()));
 
@@ -100,6 +97,7 @@ Combat_Screen::~Combat_Screen()
 void Combat_Screen::calculate_attack(){
 
     enemy_health=enemy_health-attack;
+    enemy_health_display->setNum(enemy_health);
 
     if(enemy_health<=0){
         hero_action_label->hide();
@@ -136,12 +134,6 @@ void Combat_Screen::set_defend(){
     QObject::connect(defend_timer,SIGNAL(timeout()),
                      this,SLOT(enable_defend()));
 
-
-}
-
-void Combat_Screen::change_value(){
-
-    enemy_health_display->setNum(enemy_health);
 
 }
 
