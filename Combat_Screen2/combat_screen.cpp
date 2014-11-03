@@ -16,9 +16,9 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    set_enemy_health();
-    set_hero_health();
-    set_attack();
+    set_enemy_health(40);
+    set_hero_health(100);
+    set_attacks(8,20);
     set_defend(false);
 
     enemy_display_timer = new QTimer;
@@ -103,7 +103,7 @@ Combat_Screen::~Combat_Screen()
 }
 
 void Combat_Screen::calculate_attack(){
-
+    hero_display_timer->stop();
     calculate_enemy_damage(get_hero_attack());
     enemy_health_display->setNum(get_enemy_health());
 
@@ -120,9 +120,9 @@ void Combat_Screen::calculate_attack(){
 
     attack_button->setEnabled(false);
     attack_timer->start(6000);
-    hero_display_timer->start(5000);
+    hero_display_timer->start(3000);
 
-    hero_action_label->setText("You used ATTACK!");
+    hero_action_label->setText("You used ATTACK! -5");
 
     QObject::connect(hero_display_timer,SIGNAL(timeout()),
                      this,SLOT(set_hero_action_display()));
@@ -136,22 +136,48 @@ void Combat_Screen::calculate_attack(){
 
 void Combat_Screen::execute_magic(){
     Magic *magic_dialog = new Magic;
-    magic_dialog->show();
-    QObject::connect(magic_dialog,SIGNAL(accepted()),
-                     this,SLOT(calculate_magic()));
-}
-
-void Combat_Screen::calculate_magic(){
-    if((fire_used==true)||(ice_used==true)){
-        calculate_enemy_damage(20);
-        fire_used=false;
-        ice_used=false;
+    int n=magic_dialog->exec();
+    if(n==1){
+        hero_display_timer->stop();
+        calculate_enemy_damage(get_hero_fire());
+        enemy_health_display->setNum(get_enemy_health());
         magic_button->setEnabled(false);
         magic_timer->start(25000);
+        hero_display_timer->start(3000);
 
+        hero_action_label->setText("You used FIRE -20");
+
+        QObject::connect(hero_display_timer,SIGNAL(timeout()),
+                         this,SLOT(set_hero_action_display()));
+
+    }if(n==2){
+        calculate_enemy_damage(get_hero_ice());
+        hero_display_timer->stop();
+        enemy_health_display->setNum(get_enemy_health());
+        magic_button->setEnabled(false);
+        magic_timer->start(25000);
+        hero_display_timer->start(3000);
+
+        hero_action_label->setText("You used ICE -8");
+
+        QObject::connect(hero_display_timer,SIGNAL(timeout()),
+                         this,SLOT(set_hero_action_display()));
     }
     QObject::connect(magic_timer,SIGNAL(timeout()),
                      this,SLOT(enable_magic()));
+    if(get_enemy_health()<=0){
+        set_enemy_health(0);
+        enemy_health_display->setNum(get_enemy_health());
+        hero_action_label->hide();
+        enemy_action_label->hide();
+        enemy_timer->stop();
+        magic_timer->stop();
+        Win_Screen *dialog = new Win_Screen;
+        dialog->show();
+
+        QObject::connect(dialog,SIGNAL(finished(int)),
+                         this,SLOT(close()));
+    }
 }
 
 void Combat_Screen::execute_defend(){
@@ -187,22 +213,22 @@ void Combat_Screen::enable_defend(){
 void Combat_Screen::calculate_enemy_attack(){
 
     if(get_defend()==true){
-        enemy_action_label->setText("SPIDER used BITE!");
+        enemy_action_label->setText("SPIDER used BITE! -0");
         enemy_action_label->show();
 
-        enemy_display_timer->start(5000);
+        enemy_display_timer->start(3000);
 
-        hero_action_label->setText("YOU defended the attack!");
+        hero_action_label->setText("you defended the attack!");
         hero_action_label->show();
 
-        hero_display_timer->start(5000);
+        hero_display_timer->start(3000);
 
         set_defend(false);
     }else{
     calculate_hero_damage(5);
     hero_health_bar->setValue(get_hero_health());
 
-    enemy_action_label->setText("SPIDER used BITE!");
+    enemy_action_label->setText("SPIDER used BITE! -5");
 
     enemy_action_label->show();
 

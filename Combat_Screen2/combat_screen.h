@@ -47,7 +47,6 @@ private slots:
     void set_hero_action_display();
     void execute_defend();
     void execute_magic();
-    void calculate_magic();
 };
 
 #endif // COMBAT_SCREEN_H

@@ -42,14 +42,10 @@ Magic::~Magic()
 }
 
 void Magic::execute_fire(){
-    fire_used=true;
-    accept();
-    close();
+    QDialog::done(1);
 }
 
 void Magic::execute_ice(){
-    ice_used=true;
-    accept();
-    close();
+    QDialog::done(2);
 }
 
