@@ -25,6 +25,7 @@ private:
     QPushButton *attack_button;
     QPushButton *defend_button;
     QPushButton *magic_button;
+    QPushButton *item_button;
     QLabel *enemy_health_display;
     QLabel *hero_action_label;
     QLabel *enemy_action_label;
@@ -47,6 +48,7 @@ private slots:
     void set_hero_action_display();
     void execute_defend();
     void execute_magic();
+    void execute_item();
 };
 
 #endif // COMBAT_SCREEN_H

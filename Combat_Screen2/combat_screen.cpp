@@ -9,6 +9,7 @@
 #include "win_screen.h"
 #include "lose_screen.h"
 #include "magic.h"
+#include "item_screen.h"
 #include "ui_combat_screen.h"
 
 Combat_Screen::Combat_Screen(QWidget *parent) :
@@ -22,6 +23,11 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
     set_hero_health(100);
     set_attacks(8,20);
     set_defend(false);
+
+    QLabel *enemy_title = new QLabel;
+    QLabel *hp_label = new QLabel;
+    enemy_title->setText(enemy_name);
+    hp_label->setText(" HP");
 
     enemy_display_timer = new QTimer;
     hero_display_timer = new QTimer;
@@ -46,20 +52,22 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
     magic_button = new QPushButton;
     magic_button->setText("MAGIC");
 
+    item_button = new QPushButton;
+    item_button->setText("ITEM");
+
     hero_health_bar = new QProgressBar;
     hero_health_bar->setValue(get_hero_health());
+
+    QHBoxLayout *button_layout = new QHBoxLayout;
+    button_layout->addWidget(attack_button);
+    button_layout->addWidget(defend_button);
 
     QVBoxLayout *left_layout = new QVBoxLayout;
     left_layout->addWidget(hero_health_bar);
     left_layout->addSpacing(100);
-    left_layout->addWidget(attack_button);
+    left_layout->addLayout(button_layout);
     left_layout->addWidget(magic_button);
-    left_layout->addWidget(defend_button);
-
-    QLabel *enemy_title = new QLabel;
-    QLabel *hp_label = new QLabel;
-    enemy_title->setText(enemy_name);
-    hp_label->setText(" HP");
+    left_layout->addWidget(item_button);
 
     QHBoxLayout *top_right_layout = new QHBoxLayout;
     top_right_layout->addWidget(enemy_title);
@@ -95,6 +103,8 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
                      this,SLOT(execute_defend()));
     QObject::connect(magic_button,SIGNAL(clicked()),
                      this,SLOT(execute_magic()));
+    QObject::connect(item_button,SIGNAL(clicked()),
+                     this,SLOT(execute_item()));
 
 
 }
@@ -187,8 +197,11 @@ void Combat_Screen::execute_defend(){
 
     QObject::connect(defend_timer,SIGNAL(timeout()),
                      this,SLOT(enable_defend()));
+}
 
-
+void Combat_Screen::execute_item(){
+    Item_screen *dialog = new Item_screen;
+    int n=dialog->exec();
 }
 
 void Combat_Screen::calculate_enemy_attack(){
