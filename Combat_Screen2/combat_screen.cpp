@@ -26,7 +26,7 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
 
     QLabel *enemy_title = new QLabel;
     QLabel *hp_label = new QLabel;
-    enemy_title->setText(enemy_name);
+    enemy_title->setText("SPIDER ");
     hp_label->setText(" HP");
 
     enemy_display_timer = new QTimer;
@@ -120,6 +120,8 @@ void Combat_Screen::calculate_attack(){
     enemy_health_display->setNum(get_enemy_health());
 
     if(get_enemy_health()<=0){
+        set_enemy_health(0);
+        enemy_health_display->setNum(get_enemy_health());
         hero_action_label->hide();
         enemy_action_label->hide();
         enemy_timer->stop();
@@ -223,7 +225,7 @@ void Combat_Screen::calculate_enemy_attack(){
     hero_health_bar->setValue(get_hero_health());
     enemy_action_label->setText("SPIDER used BITE! -5");
     enemy_action_label->show();
-    enemy_display_timer->start(5000);
+    enemy_display_timer->start(3000);
     if(get_hero_health()<=0){
         hero_health_bar->setValue(0);
         hero_action_label->hide();

@@ -8,6 +8,7 @@
 #include <QProgressBar>
 #include "magic.h"
 
+
 namespace Ui {
 class Combat_Screen;
 }
@@ -36,7 +37,6 @@ private:
     QTimer *enemy_timer;
     QTimer *enemy_display_timer;
     QTimer *hero_display_timer;
-    const QString enemy_name = "SPIDER ";
 
 private slots:
     void calculate_attack();
