@@ -10,6 +10,8 @@ public:
     void set_attacks(int n,int m){attack=5;
                      ice=n;
                      fire=m;};
+    void set_hero_lives(int n){lives=n;};
+    int get_hero_lives(){return lives;};
     void set_hero_health(int n){hero_health=n;};
     void calculate_hero_damage(int damage){hero_health-=damage;};
     int get_hero_health(){return hero_health;};
@@ -27,5 +29,6 @@ private:
     int ice;
     bool defend;
     int hero_health;
+    int lives;
     int enemy_health;
 };

@@ -7,6 +7,7 @@
 #include <QProgressBar>
 #include "combat_screen.h"
 #include "win_screen.h"
+#include "lose_screen.h"
 #include "magic.h"
 #include "ui_combat_screen.h"
 
@@ -16,6 +17,7 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    set_hero_lives(5);
     set_enemy_health(40);
     set_hero_health(100);
     set_attacks(8,20);
@@ -112,10 +114,9 @@ void Combat_Screen::calculate_attack(){
         enemy_action_label->hide();
         enemy_timer->stop();
         Win_Screen *dialog = new Win_Screen;
-        dialog->show();
-
-        QObject::connect(dialog,SIGNAL(finished(int)),
-                         this,SLOT(close()));
+        if(dialog->exec()==1){
+            close();
+        }
     }
 
     attack_button->setEnabled(false);
@@ -140,25 +141,25 @@ void Combat_Screen::execute_magic(){
     if(n==1){
         hero_display_timer->stop();
         calculate_enemy_damage(get_hero_fire());
+        hero_action_label->setText("You used FIRE -20");
+        hero_action_label->show();
         enemy_health_display->setNum(get_enemy_health());
         magic_button->setEnabled(false);
         magic_timer->start(25000);
         hero_display_timer->start(3000);
-
-        hero_action_label->setText("You used FIRE -20");
 
         QObject::connect(hero_display_timer,SIGNAL(timeout()),
                          this,SLOT(set_hero_action_display()));
 
     }if(n==2){
         calculate_enemy_damage(get_hero_ice());
+        hero_action_label->setText("You used ICE -8");
+        hero_action_label->show();
         hero_display_timer->stop();
         enemy_health_display->setNum(get_enemy_health());
         magic_button->setEnabled(false);
         magic_timer->start(25000);
         hero_display_timer->start(3000);
-
-        hero_action_label->setText("You used ICE -8");
 
         QObject::connect(hero_display_timer,SIGNAL(timeout()),
                          this,SLOT(set_hero_action_display()));
@@ -173,10 +174,9 @@ void Combat_Screen::execute_magic(){
         enemy_timer->stop();
         magic_timer->stop();
         Win_Screen *dialog = new Win_Screen;
-        dialog->show();
-
-        QObject::connect(dialog,SIGNAL(finished(int)),
-                         this,SLOT(close()));
+        if(dialog->exec()==1){
+            close();
+        }
     }
 }
 
@@ -188,25 +188,6 @@ void Combat_Screen::execute_defend(){
     QObject::connect(defend_timer,SIGNAL(timeout()),
                      this,SLOT(enable_defend()));
 
-
-}
-
-void Combat_Screen::enable_attack(){
-
-    attack_button->setEnabled(true);
-    attack_timer->stop();
-
-}
-
-void Combat_Screen::enable_magic(){
-    magic_button->setEnabled(true);
-    magic_timer->stop();
-}
-
-void Combat_Screen::enable_defend(){
-
-    defend_button->setEnabled(true);
-    defend_timer->stop();
 
 }
 
@@ -227,18 +208,46 @@ void Combat_Screen::calculate_enemy_attack(){
     }else{
     calculate_hero_damage(5);
     hero_health_bar->setValue(get_hero_health());
-
     enemy_action_label->setText("SPIDER used BITE! -5");
-
     enemy_action_label->show();
-
     enemy_display_timer->start(5000);
+    if(get_hero_health()<=0){
+        hero_health_bar->setValue(0);
+        hero_action_label->hide();
+        enemy_action_label->hide();
+        enemy_timer->stop();
+        magic_timer->stop();
+        lose_screen *dialog = new lose_screen;
+        set_hero_lives(get_hero_lives()-1);
+        if(dialog->exec()==1){
+            close();
+        }
+    }
 }
     QObject::connect(enemy_display_timer,SIGNAL(timeout()),
                      this,SLOT(set_enemy_action_display()));
     QObject::connect(hero_display_timer,SIGNAL(timeout()),
                      this,SLOT(set_hero_action_display()));
 
+
+}
+
+void Combat_Screen::enable_attack(){
+
+    attack_button->setEnabled(true);
+    attack_timer->stop();
+
+}
+
+void Combat_Screen::enable_magic(){
+    magic_button->setEnabled(true);
+    magic_timer->stop();
+}
+
+void Combat_Screen::enable_defend(){
+
+    defend_button->setEnabled(true);
+    defend_timer->stop();
 
 }
 

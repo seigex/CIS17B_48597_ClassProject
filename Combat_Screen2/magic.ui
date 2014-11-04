@@ -11,9 +11,15 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>MAGIC</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="Hero.qrc">
+    <normaloff>:/new/prefix1/Character.png</normaloff>:/new/prefix1/Character.png</iconset>
   </property>
  </widget>
- <resources/>
+ <resources>
+  <include location="Hero.qrc"/>
+ </resources>
  <connections/>
 </ui>

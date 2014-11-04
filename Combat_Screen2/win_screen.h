@@ -20,6 +20,8 @@ public:
 private:
     Ui::Win_Screen *ui;
     QPushButton *close_button;
+private slots:
+    void finish();
 
 };
 

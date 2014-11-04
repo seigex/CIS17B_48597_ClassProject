@@ -19,10 +19,14 @@ Win_Screen::Win_Screen(QWidget *parent) :
     setLayout(main_layout);
 
     QObject::connect(close_button,SIGNAL(clicked()),
-                     this,SLOT(close()));
+                     this,SLOT(finish()));
 }
 
 Win_Screen::~Win_Screen()
 {
     delete ui;
+}
+
+void Win_Screen::finish(){
+    done(1);
 }
