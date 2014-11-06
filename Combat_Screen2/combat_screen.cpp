@@ -37,7 +37,9 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
     enemy_timer = new QTimer;
 
     hero_action_label = new QLabel;
+    hero_action_label->setText(" ");
     enemy_action_label = new QLabel;
+    enemy_action_label->setText(" ");
 
     enemy_health_display = new QLabel;
     enemy_health_display->setNum(get_enemy_health());
@@ -267,11 +269,11 @@ void Combat_Screen::enable_defend(){
 }
 
 void Combat_Screen::set_enemy_action_display(){
-    enemy_action_label->hide();
+    enemy_action_label->setText(" ");
     enemy_display_timer->stop();
 }
 
 void Combat_Screen::set_hero_action_display(){
-    hero_action_label->hide();
+    hero_action_label->setText(" ");
     hero_display_timer->stop();
 }
