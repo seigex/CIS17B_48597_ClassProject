@@ -28,5 +28,5 @@ Win_Screen::~Win_Screen()
 }
 
 void Win_Screen::finish(){
-    done(1);
+    QDialog::done(1);
 }
