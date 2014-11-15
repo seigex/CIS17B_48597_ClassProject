@@ -136,14 +136,18 @@ void Combat_Screen::calculate_attack(){
         enemy_health_display->setNum(get_enemy_health());
         hero_action_label->setText(" ");
         enemy_action_label->setText(" ");
+        attack_button->setEnabled(true);
+        defend_button->setEnabled(true);
+        magic_button->setEnabled(true);
+        item_button->setEnabled(true);
         magic_timer->stop();
         attack_timer->stop();
-        attack_timer->stop();
+        enemy_timer->stop();
         defend_timer->stop();
         enemy_display_timer->stop();
         hero_display_timer->stop();
-        Win_Screen *dialog = new Win_Screen;
-        if(dialog->exec()==1){
+        Win_Screen dialog(this);
+        if(dialog.exec()==1){
             close();
         }
     }
@@ -201,14 +205,18 @@ void Combat_Screen::execute_magic(){
         enemy_health_display->setNum(get_enemy_health());
         hero_action_label->setText(" ");
         enemy_action_label->setText(" ");
-        delete magic_timer;
-        delete attack_timer;
-        delete attack_timer;
-        delete defend_timer;
-        delete enemy_display_timer;
-        delete hero_display_timer;
-        Win_Screen *dialog = new Win_Screen;
-        if(dialog->exec()==1){
+        attack_button->setEnabled(true);
+        defend_button->setEnabled(true);
+        magic_button->setEnabled(true);
+        item_button->setEnabled(true);
+        magic_timer->stop();
+        attack_timer->stop();
+        enemy_timer->stop();
+        defend_timer->stop();
+        enemy_display_timer->stop();
+        hero_display_timer->stop();
+        Win_Screen dialog(this);
+        if(dialog.exec()==1){
             close();
         }
     }
@@ -257,16 +265,16 @@ void Combat_Screen::calculate_enemy_attack(){
         hero_health_bar->setValue(get_hero_health());
         hero_action_label->setText(" ");
         enemy_action_label->setText(" ");
-        delete magic_timer;
-        delete attack_timer;
-        delete attack_timer;
-        delete defend_timer;
-        delete enemy_display_timer;
-        delete hero_display_timer;
+        magic_timer->stop();
+        attack_timer->stop();
+        attack_timer->stop();
+        defend_timer->stop();
+        enemy_display_timer->stop();
+        hero_display_timer->stop();
 
-        lose_screen *dialog = new lose_screen;
+        lose_screen dialog(this);
         set_hero_lives(get_hero_lives()-1);
-        if(dialog->exec()==1){
+        if(dialog.exec()==1){
             close();
         }
     }
