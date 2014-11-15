@@ -23,6 +23,9 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
     set_hero_health(100);
     set_attacks(8,20);
     set_defend(false);
+    atkValue=0;
+    dfnValue=0;
+    mgcValue=0;
 
     QLabel *enemy_title = new QLabel;
     QLabel *hp_label = new QLabel;
@@ -62,21 +65,21 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
     attack_bar = new QProgressBar;
     QString myStyleSheet1 = QString("QProgressBar::chunk { background: red;}");
     myStyleSheet1.append("QProgressBar{ color: black;}");
-    myStyleSheet1.append("QProgressBar {border: 2px solid grey; text-align: center; background-color: grey;}");
+    myStyleSheet1.append("QProgressBar {border: 1px solid grey; text-align: center; background-color: grey;}");
     attack_bar->setStyleSheet(myStyleSheet1);
     defend_bar = new QProgressBar;
     QString myStyleSheet2 = QString("QProgressBar::chunk { background: yellow;}");
     myStyleSheet2.append("QProgressBar{ color: black;}");
-    myStyleSheet2.append("QProgressBar {border: 2px solid grey; text-align: center; background-color: grey;}");
+    myStyleSheet2.append("QProgressBar {border: 1px solid grey; text-align: center; background-color: grey;}");
     defend_bar->setStyleSheet(myStyleSheet2);
     magic_bar = new QProgressBar;
     QString myStyleSheet3 = QString("QProgressBar::chunk { background: blue;}");
     myStyleSheet3.append("QProgressBar{ color: black;}");
-    myStyleSheet3.append("QProgressBar {border: 2px solid grey; text-align: center; background-color: grey;}");
+    myStyleSheet3.append("QProgressBar {border: 1px solid grey; text-align: center; background-color: grey;}");
     magic_bar->setStyleSheet(myStyleSheet3);
-    attack_bar->setValue(100);
-    defend_bar->setValue(100);
-    magic_bar->setValue(100);
+    attack_bar->setValue(atkValue);
+    defend_bar->setValue(dfnValue);
+    magic_bar->setValue(mgcValue);
 
     QHBoxLayout *attack_button_layout = new QHBoxLayout;
     attack_button_layout->addWidget(attack_button);
@@ -173,6 +176,11 @@ void Combat_Screen::calculate_attack(){
         }
     }
 
+    attack_bar_timer = new QTimer;
+
+    QObject::connect(attack_bar_timer,SIGNAL(timeout()),
+                     this,SLOT(update_attack_bar()));
+
     QObject::connect(hero_display_timer,SIGNAL(timeout()),
                      this,SLOT(set_hero_action_display()));
     QObject::connect(attack_timer,SIGNAL(timeout()),
@@ -180,6 +188,7 @@ void Combat_Screen::calculate_attack(){
 
     attack_button->setEnabled(false);
     attack_timer->start(6000);
+    attack_bar_timer->start(50);
     hero_display_timer->start(3000);
     hero_action_label->setText("You used ATTACK! -5");
     hero_action_label->show();
@@ -218,8 +227,13 @@ void Combat_Screen::execute_magic(){
 
     }
 
+    magic_bar_timer = new QTimer;
+
     QObject::connect(magic_timer,SIGNAL(timeout()),
                      this,SLOT(enable_magic()));
+    QObject::connect(magic_bar_timer,SIGNAL(timeout()),
+                     this,SLOT(update_magic_bar()));
+    magic_bar_timer->start(242);
 
     if(get_enemy_health()<=0){
         set_enemy_health(0);
@@ -245,9 +259,15 @@ void Combat_Screen::execute_magic(){
 
 void Combat_Screen::execute_defend(){
 
+    defend_bar_timer = new QTimer;
+
     QObject::connect(defend_timer,SIGNAL(timeout()),
                      this,SLOT(enable_defend()));
 
+    QObject::connect(defend_bar_timer,SIGNAL(timeout()),
+                     this,SLOT(update_defend_bar()));
+
+    defend_bar_timer->start(94);
     defend_timer->start(10000);
     set_defend(true);
     defend_button->setEnabled(false);
@@ -304,18 +324,29 @@ void Combat_Screen::calculate_enemy_attack(){
 
 void Combat_Screen::enable_attack(){
 
+    atkValue=0;
+    attack_bar->setValue(atkValue);
+    attack_bar_timer->stop();
+    attack_bar_timer->deleteLater();
     attack_button->setEnabled(true);
     attack_timer->stop();
 
 }
 
 void Combat_Screen::enable_magic(){
+    mgcValue=0;
+    magic_bar->setValue(mgcValue);
+    magic_bar_timer->stop();
+    magic_bar_timer->deleteLater();
     magic_button->setEnabled(true);
     magic_timer->stop();
 }
 
 void Combat_Screen::enable_defend(){
-
+    dfnValue=0;
+    defend_bar->setValue(dfnValue);
+    defend_bar_timer->stop();
+    defend_bar_timer->deleteLater();
     defend_button->setEnabled(true);
     defend_timer->stop();
 
@@ -329,4 +360,19 @@ void Combat_Screen::set_enemy_action_display(){
 void Combat_Screen::set_hero_action_display(){
     hero_action_label->setText(" ");
     hero_display_timer->stop();
+}
+
+void Combat_Screen::update_attack_bar(){
+    atkValue++;
+    attack_bar->setValue(atkValue);
+}
+
+void Combat_Screen::update_defend_bar(){
+    dfnValue++;
+    defend_bar->setValue(dfnValue);
+}
+
+void Combat_Screen::update_magic_bar(){
+    mgcValue++;
+    magic_bar->setValue(mgcValue);
 }

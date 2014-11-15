@@ -18,6 +18,9 @@ class Combat_Screen : public QDialog, public Hero
     Q_OBJECT
 
 public:
+    unsigned short atkValue;
+    unsigned short dfnValue;
+    unsigned short mgcValue;
     explicit Combat_Screen(QWidget *parent = 0);
     ~Combat_Screen();
 
@@ -40,6 +43,9 @@ private:
     QTimer *enemy_timer;
     QTimer *enemy_display_timer;
     QTimer *hero_display_timer;
+    QTimer *attack_bar_timer;
+    QTimer *defend_bar_timer;
+    QTimer *magic_bar_timer;
 
 private slots:
     void calculate_attack();
@@ -52,6 +58,9 @@ private slots:
     void execute_defend();
     void execute_magic();
     void execute_item();
+    void update_attack_bar();
+    void update_defend_bar();
+    void update_magic_bar();
 };
 
 #endif // COMBAT_SCREEN_H
