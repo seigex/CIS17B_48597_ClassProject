@@ -59,15 +59,36 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
 
     hero_health_bar = new QProgressBar;
     hero_health_bar->setValue(get_hero_health());
+    attack_bar = new QProgressBar;
+    QString myStyleSheet1 = QString("QProgressBar::chunk { background: red;}");
+    myStyleSheet1.append("QProgressBar{ color: black;}");
+    myStyleSheet1.append("QProgressBar {border: 2px solid grey; text-align: center; background-color: grey;}");
+    attack_bar->setStyleSheet(myStyleSheet1);
+    defend_bar = new QProgressBar;
+    QString myStyleSheet2 = QString("QProgressBar::chunk { background: yellow;}");
+    myStyleSheet2.append("QProgressBar{ color: black;}");
+    myStyleSheet2.append("QProgressBar {border: 2px solid grey; text-align: center; background-color: grey;}");
+    defend_bar->setStyleSheet(myStyleSheet2);
+    magic_bar = new QProgressBar;
+    QString myStyleSheet3 = QString("QProgressBar::chunk { background: blue;}");
+    myStyleSheet3.append("QProgressBar{ color: black;}");
+    myStyleSheet3.append("QProgressBar {border: 2px solid grey; text-align: center; background-color: grey;}");
+    magic_bar->setStyleSheet(myStyleSheet3);
+    attack_bar->setValue(100);
+    defend_bar->setValue(100);
+    magic_bar->setValue(100);
 
     QHBoxLayout *attack_button_layout = new QHBoxLayout;
     attack_button_layout->addWidget(attack_button);
+    attack_button_layout->addWidget(attack_bar);
 
     QHBoxLayout *defend_button_layout = new QHBoxLayout;
     defend_button_layout->addWidget(defend_button);
+    defend_button_layout->addWidget(defend_bar);
 
     QHBoxLayout *magic_button_layout = new QHBoxLayout;
     magic_button_layout->addWidget(magic_button);
+    magic_button_layout->addWidget(magic_bar);
 
     QHBoxLayout *item_button_layout = new QHBoxLayout;
     item_button_layout->addWidget(item_button);

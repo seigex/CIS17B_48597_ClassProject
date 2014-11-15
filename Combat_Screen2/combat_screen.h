@@ -31,6 +31,9 @@ private:
     QLabel *hero_action_label;
     QLabel *enemy_action_label;
     QProgressBar *hero_health_bar;
+    QProgressBar *attack_bar;
+    QProgressBar *defend_bar;
+    QProgressBar *magic_bar;
     QTimer *attack_timer;
     QTimer *magic_timer;
     QTimer *defend_timer;
