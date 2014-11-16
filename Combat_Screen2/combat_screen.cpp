@@ -170,6 +170,15 @@ void Combat_Screen::calculate_attack(){
         defend_timer->stop();
         enemy_display_timer->stop();
         hero_display_timer->stop();
+        delete attack_bar_timer;
+        attack_bar_timer = NULL;
+        delete defend_bar_timer;
+        defend_bar_timer = NULL;
+        delete magic_bar_timer;
+        magic_bar_timer = NULL;
+        attack_bar->setValue(0);
+        defend_bar->setValue(0);
+        magic_bar->setValue(0);
         Win_Screen dialog(this);
         if(dialog.exec()==1){
             close();
@@ -180,7 +189,6 @@ void Combat_Screen::calculate_attack(){
 
     QObject::connect(attack_bar_timer,SIGNAL(timeout()),
                      this,SLOT(update_attack_bar()));
-
     QObject::connect(hero_display_timer,SIGNAL(timeout()),
                      this,SLOT(set_hero_action_display()));
     QObject::connect(attack_timer,SIGNAL(timeout()),
@@ -312,7 +320,6 @@ void Combat_Screen::calculate_enemy_attack(){
         defend_timer->stop();
         enemy_display_timer->stop();
         hero_display_timer->stop();
-
         lose_screen dialog(this);
         set_hero_lives(get_hero_lives()-1);
         if(dialog.exec()==1){
@@ -326,8 +333,8 @@ void Combat_Screen::enable_attack(){
 
     atkValue=0;
     attack_bar->setValue(atkValue);
-    attack_bar_timer->stop();
-    attack_bar_timer->deleteLater();
+    delete attack_bar_timer;
+    attack_bar_timer = NULL;
     attack_button->setEnabled(true);
     attack_timer->stop();
 
@@ -336,8 +343,8 @@ void Combat_Screen::enable_attack(){
 void Combat_Screen::enable_magic(){
     mgcValue=0;
     magic_bar->setValue(mgcValue);
-    magic_bar_timer->stop();
-    magic_bar_timer->deleteLater();
+    delete magic_bar_timer;
+    magic_bar_timer = NULL;
     magic_button->setEnabled(true);
     magic_timer->stop();
 }
@@ -345,8 +352,8 @@ void Combat_Screen::enable_magic(){
 void Combat_Screen::enable_defend(){
     dfnValue=0;
     defend_bar->setValue(dfnValue);
-    defend_bar_timer->stop();
-    defend_bar_timer->deleteLater();
+    delete defend_bar_timer;
+    defend_bar_timer = NULL;
     defend_button->setEnabled(true);
     defend_timer->stop();
 
