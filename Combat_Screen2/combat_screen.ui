@@ -17,22 +17,6 @@
    <iconset resource="Hero.qrc">
     <normaloff>:/new/prefix1/Character.png</normaloff>:/new/prefix1/Character.png</iconset>
   </property>
-  <widget class="QLabel" name="hero_label">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>50</y>
-     <width>61</width>
-     <height>61</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="pixmap">
-    <pixmap resource="Hero.qrc">:/new/prefix1/Character.png</pixmap>
-   </property>
-  </widget>
   <widget class="QLabel" name="enemy_label">
    <property name="geometry">
     <rect>

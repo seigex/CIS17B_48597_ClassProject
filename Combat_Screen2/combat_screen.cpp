@@ -1,10 +1,5 @@
-#include <QPushButton>
-#include <QTimer>
-#include <QLCDNumber>
+#include <QtGui>
 #include <iostream>
-#include <QLabel>
-#include <QLayout>
-#include <QProgressBar>
 #include "combat_screen.h"
 #include "win_screen.h"
 #include "lose_screen.h"
@@ -18,7 +13,7 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    set_hero_lives(5);
+    set_lives(1);
     set_enemy_health(40);
     set_hero_health(100);
     set_attacks(8,20);
@@ -26,6 +21,10 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
     atkValue=0;
     dfnValue=0;
     mgcValue=0;
+    QImage hero;
+    hero = QImage("C:/Users/agros_000/Desktop/push/Combat_Screen2/Character.png");
+    hero_pic = new QLabel;
+    hero_pic->setPixmap(QPixmap::fromImage(hero));
 
     QLabel *enemy_title = new QLabel;
     QLabel *hp_label = new QLabel;
@@ -62,8 +61,12 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
 
     hero_health_bar = new QProgressBar;
     hero_health_bar->setValue(get_hero_health());
+    QString mainStyleSheet = QString("QProgressBar::chunk { background: green;}");
+    mainStyleSheet.append("QProgressBar{ color: black;}");
+    mainStyleSheet.append("QProgressBar {border: 2px solid grey; text-align: center; background-color: grey;}");
+    hero_health_bar->setStyleSheet(mainStyleSheet);
     attack_bar = new QProgressBar;
-    QString myStyleSheet1 = QString("QProgressBar::chunk { background: red;}");
+    QString myStyleSheet1 = QString("QProgressBar::chunk { background: purple;}");
     myStyleSheet1.append("QProgressBar{ color: black;}");
     myStyleSheet1.append("QProgressBar {border: 1px solid grey; text-align: center; background-color: grey;}");
     attack_bar->setStyleSheet(myStyleSheet1);
@@ -98,7 +101,7 @@ Combat_Screen::Combat_Screen(QWidget *parent) :
 
     QVBoxLayout *left_layout = new QVBoxLayout;
     left_layout->addWidget(hero_health_bar);
-    left_layout->addSpacing(100);
+    left_layout->addWidget(hero_pic);
     left_layout->addLayout(attack_button_layout);
     left_layout->addLayout(defend_button_layout);
     left_layout->addLayout(magic_button_layout);
@@ -156,29 +159,7 @@ void Combat_Screen::calculate_attack(){
     enemy_health_display->setNum(get_enemy_health());
 
     if(get_enemy_health()<=0){
-        set_enemy_health(0);
-        enemy_health_display->setNum(get_enemy_health());
-        hero_action_label->setText(" ");
-        enemy_action_label->setText(" ");
-        attack_button->setEnabled(true);
-        defend_button->setEnabled(true);
-        magic_button->setEnabled(true);
-        item_button->setEnabled(true);
-        magic_timer->stop();
-        attack_timer->stop();
-        enemy_timer->stop();
-        defend_timer->stop();
-        enemy_display_timer->stop();
-        hero_display_timer->stop();
-        delete attack_bar_timer;
-        attack_bar_timer = NULL;
-        delete defend_bar_timer;
-        defend_bar_timer = NULL;
-        delete magic_bar_timer;
-        magic_bar_timer = NULL;
-        attack_bar->setValue(0);
-        defend_bar->setValue(0);
-        magic_bar->setValue(0);
+        win();
         Win_Screen dialog(this);
         if(dialog.exec()==1){
             close();
@@ -244,20 +225,7 @@ void Combat_Screen::execute_magic(){
     magic_bar_timer->start(242);
 
     if(get_enemy_health()<=0){
-        set_enemy_health(0);
-        enemy_health_display->setNum(get_enemy_health());
-        hero_action_label->setText(" ");
-        enemy_action_label->setText(" ");
-        attack_button->setEnabled(true);
-        defend_button->setEnabled(true);
-        magic_button->setEnabled(true);
-        item_button->setEnabled(true);
-        magic_timer->stop();
-        attack_timer->stop();
-        enemy_timer->stop();
-        defend_timer->stop();
-        enemy_display_timer->stop();
-        hero_display_timer->stop();
+        win();
         Win_Screen dialog(this);
         if(dialog.exec()==1){
             close();
@@ -310,19 +278,12 @@ void Combat_Screen::calculate_enemy_attack(){
     enemy_display_timer->start(3000);
 
     if(get_hero_health()<=0){
-        set_hero_health(0);
-        hero_health_bar->setValue(get_hero_health());
-        hero_action_label->setText(" ");
-        enemy_action_label->setText(" ");
-        magic_timer->stop();
-        attack_timer->stop();
-        attack_timer->stop();
-        defend_timer->stop();
-        enemy_display_timer->stop();
-        hero_display_timer->stop();
         lose_screen dialog(this);
-        set_hero_lives(get_hero_lives()-1);
+        set_lives(get_lives()-1);
         if(dialog.exec()==1){
+            if(get_lives()==0){
+                std::cout<<"YOU LOSE!"<<std::endl;
+            }
             close();
         }
     }
@@ -382,4 +343,56 @@ void Combat_Screen::update_defend_bar(){
 void Combat_Screen::update_magic_bar(){
     mgcValue++;
     magic_bar->setValue(mgcValue);
+}
+
+void Combat_Screen::win(){
+    set_enemy_health(0);
+    enemy_health_display->setNum(get_enemy_health());
+    hero_action_label->setText(" ");
+    enemy_action_label->setText(" ");
+    attack_button->setEnabled(true);
+    defend_button->setEnabled(true);
+    magic_button->setEnabled(true);
+    item_button->setEnabled(true);
+    magic_timer->stop();
+    attack_timer->stop();
+    enemy_timer->stop();
+    defend_timer->stop();
+    enemy_display_timer->stop();
+    hero_display_timer->stop();
+    delete attack_bar_timer;
+    attack_bar_timer = NULL;
+    delete defend_bar_timer;
+    defend_bar_timer = NULL;
+    delete magic_bar_timer;
+    magic_bar_timer = NULL;
+    attack_bar->setValue(0);
+    defend_bar->setValue(0);
+    magic_bar->setValue(0);
+}
+
+void Combat_Screen::lose(){
+    set_hero_health(0);
+    hero_health_bar->setValue(get_hero_health());
+    hero_action_label->setText(" ");
+    enemy_action_label->setText(" ");
+    attack_button->setEnabled(true);
+    defend_button->setEnabled(true);
+    magic_button->setEnabled(true);
+    item_button->setEnabled(true);
+    magic_timer->stop();
+    attack_timer->stop();
+    attack_timer->stop();
+    defend_timer->stop();
+    enemy_display_timer->stop();
+    hero_display_timer->stop();
+    delete attack_bar_timer;
+    attack_bar_timer = NULL;
+    delete defend_bar_timer;
+    defend_bar_timer = NULL;
+    delete magic_bar_timer;
+    magic_bar_timer = NULL;
+    attack_bar->setValue(0);
+    defend_bar->setValue(0);
+    magic_bar->setValue(0);
 }

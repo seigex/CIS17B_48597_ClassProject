@@ -2,12 +2,8 @@
 #ifndef COMBAT_SCREEN_H
 #define COMBAT_SCREEN_H
 
-#include <QDialog>
-#include <QLabel>
-#include <QTimer>
-#include <QProgressBar>
+#include <QtGui>
 #include "magic.h"
-
 
 namespace Ui {
 class Combat_Screen;
@@ -46,6 +42,8 @@ private:
     QTimer *attack_bar_timer;
     QTimer *defend_bar_timer;
     QTimer *magic_bar_timer;
+    void win();
+    void lose();
 
 private slots:
     void calculate_attack();

@@ -11,7 +11,9 @@ HEADERS += \
     hero.h \
     magic.h \
     lose_screen.h \
-    item_screen.h
+    item_screen.h \
+    enemy.h \
+    spider.h
 
 SOURCES += \
     combat_screen.cpp \
