@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Magic</class>
+ <widget class="QDialog" name="Magic">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>129</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MAGIC</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="Hero.qrc">
+    <normaloff>:/new/prefix1/Character.png</normaloff>:/new/prefix1/Character.png</iconset>
+  </property>
+ </widget>
+ <resources>
+  <include location="Hero.qrc"/>
+ </resources>
+ <connections/>
+</ui>

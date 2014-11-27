@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Background.png</file>
+        <file>Character.png</file>
+        <file>CharacterRecent20x20.png</file>
+        <file>CoffinRecent20x20.png</file>
+        <file>Logo.png</file>
+        <file>NewGame.png</file>
+        <file>Options.png</file>
+        <file>Path.png</file>
+        <file>PathRecent20x20.png</file>
+        <file>Quit.png</file>
+        <file>TopLeft.png</file>
+        <file>TopMiddle.png</file>
+        <file>TopRight.png</file>
+        <file>UpperWallRecent20x20.png</file>
+        <file>Wall.png</file>
+        <file>WallRecent20x20.png</file>
+    </qresource>
+</RCC>
